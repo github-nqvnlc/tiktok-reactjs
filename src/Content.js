@@ -4,10 +4,10 @@ function Content(){
    const [countdown, setCountdown] = useState(180)
 
    useEffect(() => {
-       setInterval(() => {
-           setCountdown(prevState => prevState - 1)
+       setTimeout(() => {
+           setCountdown(countdown - 1)
        }, 1000)
-   }, [])
+   }, [countdown])
     return(
         <div>
             <h1>{countdown}</h1>
