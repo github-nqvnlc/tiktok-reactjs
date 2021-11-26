@@ -4,9 +4,11 @@ function Content(){
    const [countdown, setCountdown] = useState(180)
 
    useEffect(() => {
-       setTimeout(() => {
+       const timerId = setInterval(() => {
            setCountdown(countdown - 1)
        }, 1000)
+
+       return () => clearInterval(timerId)
    }, [countdown])
     return(
         <div>
