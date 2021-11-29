@@ -1,22 +1,24 @@
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useRef, useLayoutEffect, useState } from "react"
 
 function Content() {
-    const [count, setCount] = useState(0)
-    
-    useLayoutEffect(() =>{
-        if (count > 3) {
-            setCount(0)
-        }
-    }, [count])
-
-    const handleRun = () => {
-        setCount(count + 1)
+    const [count, setCount] = useState(60)
+    let timerId = useRef()
+    const handleStart = () => {
+        timerId.current = setInterval(() => {
+            setCount(prevCount => prevCount - 1)
+        }, 1000)
     }
-    
+
+    const handleStop = () => {
+        clearInterval(timerId.current)
+    }
+
     return (
-        <div>
-           <h1>{count}</h1>
-           <button onClick = {handleRun}>Run</button>
+        <div style={{ padding: 20 }}>
+            <h1>{count}</h1>
+            <button onClick={handleStart}>Start</button>
+            <button onClick={handleStop}>Stop</button>
+
         </div>
     )
 }
