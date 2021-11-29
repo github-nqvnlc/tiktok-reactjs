@@ -1,29 +1,22 @@
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 
 function Content() {
-
-    const [avatar, setAvatar] = useState()
-
-    useEffect(() => {
-        return () => {
-            avatar && URL.revokeObjectURL(avatar.preview)
+    const [count, setCount] = useState(0)
+    
+    useLayoutEffect(() =>{
+        if (count > 3) {
+            setCount(0)
         }
-    },[avatar])
-    const handlePreviewAvatar = (e) => {
-        const file = e.target.files[0]
+    }, [count])
 
-        file.preview = URL.createObjectURL(file)
-        setAvatar(file)
+    const handleRun = () => {
+        setCount(count + 1)
     }
+    
     return (
         <div>
-            <input
-                type="file"
-                onChange={handlePreviewAvatar}
-            />
-            {avatar && (
-                <img src={avatar.preview} alt="" width="10%" />
-            )}
+           <h1>{count}</h1>
+           <button onClick = {handleRun}>Run</button>
         </div>
     )
 }
