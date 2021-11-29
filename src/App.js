@@ -4,32 +4,15 @@ import Content from './Content'
 function App() {
 
   const [job, setJob] = useState('')
-  const [jobs, setJobs] = useState(() => {
-    const storageJobs = JSON.parse(localStorage.getItem('jobs'))
-    return storageJobs
-      ?? []
-  })
+  const [jobs, setJobs] = useState([])
 
   const handleSub = () => {
-    setJobs(prev => {
-      const newJobs = [...prev, job]
-
-      // save to local storage
-      const jsonJobs = JSON.stringify(newJobs)
-      localStorage.setItem('jobs', jsonJobs)
-      return newJobs
-    })
+    setJobs([...jobs,job])
     setJob('')
   }
 
   const handleDel = () => {
-    setJobs(() => {
-      const newJobs = []
-      // save to local storage
-      const jsonJobs = JSON.stringify(newJobs)
-      localStorage.setItem('jobs', jsonJobs)
-      return newJobs
-    })
+    setJobs([])
   }
 
   return (
@@ -66,4 +49,4 @@ function App1(){
   )
 }
 
-export default App1  ;
+export default App1;

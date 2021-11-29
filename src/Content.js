@@ -8,7 +8,7 @@ function Content() {
         return () => {
             avatar && URL.revokeObjectURL(avatar.preview)
         }
-    })
+    },[avatar])
     const handlePreviewAvatar = (e) => {
         const file = e.target.files[0]
 
