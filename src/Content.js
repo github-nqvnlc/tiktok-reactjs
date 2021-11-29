@@ -1,18 +1,29 @@
-import {useEffect ,useState} from "react"
+import { useEffect, useState } from "react"
 
-function Content(){
-   const [countdown, setCountdown] = useState(180)
+function Content() {
 
-   useEffect(() => {
-       const timerId = setInterval(() => {
-           setCountdown(countdown - 1)
-       }, 1000)
+    const [avatar, setAvatar] = useState()
 
-       return () => clearInterval(timerId)
-   }, [countdown])
-    return(
+    useEffect(() => {
+        return () => {
+            avatar && URL.revokeObjectURL(avatar.preview)
+        }
+    })
+    const handlePreviewAvatar = (e) => {
+        const file = e.target.files[0]
+
+        file.preview = URL.createObjectURL(file)
+        setAvatar(file)
+    }
+    return (
         <div>
-            <h1>{countdown}</h1>
+            <input
+                type="file"
+                onChange={handlePreviewAvatar}
+            />
+            {avatar && (
+                <img src={avatar.preview} alt="" width="10%" />
+            )}
         </div>
     )
 }
