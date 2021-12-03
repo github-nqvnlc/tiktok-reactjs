@@ -1,38 +1,42 @@
 import { useEffect, useRef, useLayoutEffect, useState } from "react"
+import ReactDOM from "react-dom";
 
 function Content() {
-    const [count, setCount] = useState(60)
+    const [inputs, setInputs] = useState({});
 
-    const timerId = useRef()
-    const prevCount = useRef()
-
-    useEffect(()=>{
-        prevCount.current = count
-    },[count])
-
-    const handleStart = () => {
-        timerId.current = setInterval(() => {
-            setCount(prevCount => prevCount - 1)
-        }, 1000)
-
-        console.log('Start -> ', timerId.current);
+    const handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        setInputs(values => ({ ...values, [name]: value }))
     }
 
-    const handleStop = () => {
-        clearInterval(timerId.current)
-        console.log('Stop -> ', timerId.current);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(inputs);
     }
 
-    console.log(count, prevCount.current);
 
     return (
-        <div style={{ padding: 20 }}>
-            <h1>{count}</h1>
-            <button onClick={handleStart}>Start</button>
-            <button onClick={handleStop}>Stop</button>
-
-        </div>
-    )
+        <form onSubmit={handleSubmit}>
+          <label>Enter your name: 
+          <input 
+            type="text" 
+            name="username" 
+            value={inputs.username || ""} 
+            onChange={handleChange}
+          />
+          </label>
+          <label> Enter your age: 
+            <input 
+              type="number" 
+              name="age" 
+              value={inputs.age || ""} 
+              onChange={handleChange}
+            />
+            </label>
+            <input type="submit" />
+        </form>
+      )
 }
 
 export default Content
