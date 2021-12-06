@@ -1,57 +1,53 @@
-import { createContext, useState } from 'react'
-import Content from './Content'
-import './App.css'
+import { useState, useMemo, useRef} from "react";
+function App() {
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState('')
+  const [product, setProduce] = useState([])
 
-// function App() {
+  const nameRef = useRef()
 
-//   const [job, setJob] = useState('')
-//   const [jobs, setJobs] = useState([])
-
-//   const handleSub = () => {
-//     setJobs([...jobs,job])
-//     setJob('')
-//   }
-
-//   const handleDel = () => {
-//     setJobs([])
-//   }
-
-//   return (
-//     <div className="App" style={{ padding: 32 }}>
-//       <h1>List To Do</h1>
-//       <input value={job} onChange={e => setJob(e.target.value)} />
-//       <button onClick={handleSub}>Add</button>
-
-//       <ul>
-//         {jobs.map((job, index) => (
-//           <li key={index}>{job}</li>
-//         )
-//         )}
-
-//       </ul>
-
-//       <button onClick={handleDel}>Delete</button>
-//     </div>
-//   );
-// }
-
-export const ThemeContext = createContext()
-
-function App1() {
-  const [theme, setTheme] = useState('dark')
-
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
+  const handleSumit = () => {
+    setProduce([...product, {
+      name,
+      price: parseInt(price)
+    }])
+    setName('')
+    setPrice('')
+    nameRef.current.focus()
   }
 
+  const total = useMemo(()=> {
+    const result = product.reduce((result, prod) => result + prod.price, 0)
+    return result
+  },[product])
+
   return (
-    <div style={{ padding: 20 }}>
-      <ThemeContext.Provider value={theme}>
-        <button onClick={toggleTheme}>Toggle Theme</button>
-        <Content />
-      </ThemeContext.Provider>
+    <div style={{ padding: '10px 32px' }}>
+      <input
+        ref={nameRef}
+        value={name}
+        placeholder="Enter name"
+        onChange={e => setName(e.target.value)}
+      />
+      <br />
+      <input
+        value={price}
+        placeholder="Enter price"
+        onChange={e => setPrice(e.target.value)}
+      />
+      <br />
+      <button onClick={handleSumit}>Add</button>
+      <br />
+      Total: {total}
+      <ul>
+        {
+          product.map((product, index) => (
+            <li key={index}>{product.name} - {product.price}</li>
+          ))
+        }
+      </ul>
     </div>
   )
 }
 
-export default App1;
+export default App;
